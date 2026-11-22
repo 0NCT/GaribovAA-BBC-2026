@@ -16,16 +16,19 @@ def run():
             show_error("такой операции нет")
             continue
 
-        name, func, symbol = OPERATIONS[choice]
+        name, func, symbol, arity = OPERATIONS[choice]
         print(f"\nВыбрано: {name}")
 
-        a = get_number("Введите первое число: ")
-        b = get_number("Введите второе число: ")
+        a = get_number("Введите число: " if arity == 1 else "Введите первое число: ")
 
         try:
-            result = func(a, b)
+            if arity == 1:
+                result = func(a)
+            else:
+                b = get_number("Введите второе число: ")
+                result = func(a, b)
             show_result(result)
-        except ZeroDivisionError as e:
+        except (ZeroDivisionError, ValueError) as e:
             show_error(str(e))
 
         if not ask_continue():
